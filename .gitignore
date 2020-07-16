@@ -9,6 +9,7 @@ __pycache__/
 
 venv
 media
+staticfiles
 
 # celery
 celerybeat.pid
