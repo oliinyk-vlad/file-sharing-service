@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% block title %}File Sharing Service{% endblock %}
+{% block body_base %}
+    {% load crispy_forms_tags %}
+
+    <div class="container">
+        <div class="row">
+            <div class="col-8 offset-2">
+                <div id="response" class="my-4">
+                    {#                    <div class="alert alert-success">#}
+                    {#                        <h4 class="alert-heading">Well done!</h4>#}
+                    {#                        <p><a href="'+ data.file_page +'">File page</a></p>#}
+                    {#                        <p><mark>'+ data.link +'</mark></p>#}
+                    {#                    </div>#}
+                </div>
+                <form class="my-4" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {{ form|crispy }}
+                    <button type="submit" class="btn btn-primary float-right">Submit</button>
+                </form>
+
+            </div>
+
+        </div>
+    </div>
+{% endblock %}
+{% block javascript %}
+    <script>
+
+        $(document).on("submit", "form", function (event) {
+            event.preventDefault();
+            $.ajax({
+                url: $(this).attr("action"),
+                type: $(this).attr("method"),
+                dataType: "JSON",
+                data: new FormData(this),
+                processData: false,
+                contentType: false,
+                success: function (data, status) {
+                    if (data) {
+                        $('#response').empty().append(
+                            '<div class="alert alert-success">\n' +
+                            '                        <h4 class="alert-heading">Done!</h4>\n' +
+                            '                        <p>Link: ' + data.link + '</p>\n' +
+                            '                        <p><a class="btn btn-info" href="' + data.file_page + '">File page</a></p>\n' +
+                            '                    </div>'
+                        )
+                        $("form")[0].reset();
+                    }
+                },
+                error: function (xhr, desc, err) {
+                    $.each(xhr.responseJSON, function (key, value) {
+                        console.log("Error\n" + value);
+                         $('#response').empty().append(
+                             '<div class="alert alert-danger">\n' +
+                             '  <p>Error</p>\n' +
+                             '  <p>' + value + '</p>\n' +
+                             '</div>'
+                         );
+                    });
+                }
+            });
+        });
+
+
+    </script>
+{% endblock %}

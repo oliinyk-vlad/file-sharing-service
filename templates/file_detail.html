@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}File {{ object.id }}{% endblock %}
+{% block body_base %}
+    <div class="container">
+        <div class="row">
+            <div class="col-8 offset-2">
+                <div class="card my-4">
+                    <div class="card-body" style="background: #dddddd2e;">
+                        <h5 class="card-title">{{ object.source }}</h5>
+                        <p class="card-text">Link:
+                            <mark>{{ request.scheme }}://{{ request.get_host }}{{ object.source.url }}</mark>
+                        </p>
+                        <p class="card-text">Time left: {{ object.time_left }}</p>
+
+                        <a href="{{ object.source.url }}" class="btn btn-primary">Download</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
