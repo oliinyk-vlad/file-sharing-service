@@ -11,8 +11,7 @@
                             <mark>{{ request.scheme }}://{{ request.get_host }}{{ object.source.url }}</mark>
                         </p>
                         <p class="card-text">Time left: {{ object.time_left }}</p>
-
-                        <a href="{{ object.source.url }}" class="btn btn-primary">Download</a>
+                        <a href="{{ object.source.url }}" class="btn btn-primary" download>Download</a>
                     </div>
                 </div>
             </div>
