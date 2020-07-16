@@ -1,19 +1,18 @@
 {% extends "base.html" %}
 {% block title %}File Sharing Service{% endblock %}
+{% block extra_head %}
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.min.css"
+          integrity="sha256-DOS9W6NR+NFe1fUhEE0PGKY/fubbUCnOfTje2JMDw3Y=" crossorigin="anonymous"/>
+{% endblock %}
 {% block body_base %}
     {% load crispy_forms_tags %}
 
     <div class="container">
         <div class="row">
             <div class="col-8 offset-2">
-                <div id="response" class="my-4">
-                    {#                    <div class="alert alert-success">#}
-                    {#                        <h4 class="alert-heading">Well done!</h4>#}
-                    {#                        <p><a href="'+ data.file_page +'">File page</a></p>#}
-                    {#                        <p><mark>'+ data.link +'</mark></p>#}
-                    {#                    </div>#}
-                </div>
-                <form class="my-4" method="post" enctype="multipart/form-data">
+                <div id="response" class="my-4"></div>
+                <form class="my-4" method="post" enctype="multipart/form-data" autocomplete="off">
                     {% csrf_token %}
                     {{ form|crispy }}
                     <button type="submit" class="btn btn-primary float-right">Submit</button>
@@ -25,6 +24,8 @@
     </div>
 {% endblock %}
 {% block javascript %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js"
+            integrity="sha256-FEqEelWI3WouFOo2VWP/uJfs1y8KJ++FLh2Lbqc8SJk=" crossorigin="anonymous"></script>
     <script>
 
         $(document).on("submit", "form", function (event) {
@@ -51,17 +52,22 @@
                 error: function (xhr, desc, err) {
                     $.each(xhr.responseJSON, function (key, value) {
                         console.log("Error\n" + value);
-                         $('#response').empty().append(
-                             '<div class="alert alert-danger">\n' +
-                             '  <p>Error</p>\n' +
-                             '  <p>' + value + '</p>\n' +
-                             '</div>'
-                         );
+                        $('#response').empty().append(
+                            '<div class="alert alert-danger">\n' +
+                            '  <p>Error</p>\n' +
+                            '  <p>' + value + '</p>\n' +
+                            '</div>'
+                        );
                     });
                 }
             });
         });
-
-
+    </script>
+    <script>
+        $(function () {
+            $("#id_expires_at").datetimepicker({
+                format: 'd/m/Y H:i',
+            });
+        });
     </script>
 {% endblock %}

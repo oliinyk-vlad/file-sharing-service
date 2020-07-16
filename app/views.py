@@ -3,12 +3,13 @@ from django.urls import reverse
 
 from app.models import File
 from app.mixins import AjaxableResponseMixin
+from app.forms import FileForm
 
 
 class FileUpload(AjaxableResponseMixin, CreateView):
     template_name = 'index.html'
     model = File
-    fields = "__all__"
+    form_class = FileForm
 
     def get_success_url(self):
         return reverse('file-detail', args=[str(self.object.id)])
