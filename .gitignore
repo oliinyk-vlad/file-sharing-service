@@ -19,3 +19,5 @@ celerybeat-schedule.dir
 
 # db
 *.sqlite3
+
+.env
